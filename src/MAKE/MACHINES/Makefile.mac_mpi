@@ -7,12 +7,12 @@ SHELL = /bin/sh
 # generally no need to edit this section
 # unless additional compiler/linker flags or libraries needed for your machine
 
-CC =	 	/opt/local/bin/mpicxx-openmpi-mp
-CCFLAGS =	-O3 
+CC =	 	mpic++
+CCFLAGS =	-O3 -DLAMMPS_MEMALIGN=64
 SHFLAGS =	-fPIC
 DEPFLAGS =	-M
 
-LINK =		/opt/local/bin/mpicxx-openmpi-mp
+LINK =		mpic++
 LINKFLAGS =	-O3
 LIB =           
 SIZE =		size
@@ -55,7 +55,7 @@ FFTW =	/usr/local
 
 FFT_INC =       -DFFT_FFTW -I${FFTW}/include
 FFT_PATH =	-L${FFTW}/lib
-FFT_LIB =	-lfftw
+FFT_LIB =	-lfftw3
 
 # JPEG and/or PNG library
 # see discussion in Section 2.2 (step 7) of manual
@@ -64,8 +64,8 @@ FFT_LIB =	-lfftw
 # PATH = path(s) for JPEG library and/or PNG library
 # LIB = name(s) of JPEG library and/or PNG library
 
-JPG_INC =       -I/opt/local/include
-JPG_PATH = 	-L/opt/local/lib
+JPG_INC =       -I/usr/local/include
+JPG_PATH = 	-L/usr/local/lib
 JPG_LIB =	-ljpeg
 
 # ---------------------------------------------------------------------
