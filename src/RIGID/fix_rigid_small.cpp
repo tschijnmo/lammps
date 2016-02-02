@@ -49,7 +49,7 @@ FixRigidSmall *FixRigidSmall::frsptr;
 #define CHUNK 1024
 #define ATTRIBUTE_PERBODY 20
 
-#define TOLERANCE 1.0e-6
+#define TOLERANCE 1.0e-5
 #define EPSILON 1.0e-7
 #define BIG 1.0e20
 
