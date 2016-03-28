@@ -1092,7 +1092,7 @@ char *shell_failed_message(const char* cmd, int errnum)
   const char *errmsg = strerror(errnum);
   int len = strlen(cmd)+strlen(errmsg)+64;
   char *msg = new char[len];
-  sprintf(msg,"shell command '%s' failed with error '%s'", cmd, errmsg);
+  sprintf(msg,"Shell command '%s' failed with error '%s'", cmd, errmsg);
   return msg;
 }
 
@@ -1195,7 +1195,7 @@ void Input::shell()
 
     if (me == 0)
       if (system(work) != 0)
-        error->warning(FLERR,"shell command returned with non-zero status");
+        error->warning(FLERR,"Shell command returned with non-zero status");
   }
 }
 
@@ -1604,13 +1604,6 @@ void Input::package()
     for (int i = 1; i < narg; i++) fixarg[i+2] = arg[i];
     modify->add_fix(2+narg,fixarg);
     delete [] fixarg;
-
-    // set integrator = verlet/intel
-    // -sf intel does same thing in Update constructor via suffix
-
-    char *str;
-    str = (char *) "verlet/intel";
-    update->create_integrate(1,&str,0);
 
   } else error->all(FLERR,"Illegal package command");
 }

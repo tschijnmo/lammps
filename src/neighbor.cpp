@@ -162,7 +162,6 @@ Neighbor::Neighbor(LAMMPS *lmp) : Pointers(lmp)
   improperlist = NULL;
 
   copymode = 0;
-  last_binning_timestep = -1;
 }
 
 /* ---------------------------------------------------------------------- */
@@ -1516,7 +1515,7 @@ int Neighbor::check_distance()
 }
 
 /* ----------------------------------------------------------------------
-   build perpetuals neighbor lists
+   build perpetual neighbor lists
    called at setup and every few timesteps during run or minimization
    topology lists also built if topoflag = 1, USER-CUDA calls with topoflag = 0
 ------------------------------------------------------------------------- */
@@ -1819,7 +1818,13 @@ void Neighbor::setup_bins()
   if (mbins > maxhead) {
     maxhead = mbins;
     memory->destroy(binhead);
+
+    // USER-INTEL package requires one additional element
+    #if defined(LMP_USER_INTEL)
+    memory->create(binhead,maxhead + 1,"neigh:binhead");
+    #else
     memory->create(binhead,maxhead,"neigh:binhead");
+    #endif
   }
 
   // create stencil of bins to search over in neighbor list construction
@@ -2015,11 +2020,6 @@ void Neighbor::bin_atoms()
 {
   int i,ibin;
 
-  // NOTE: added for USER-DPD, why do we need this?
-
-  //if (last_binning_timestep == update->ntimestep) return;
-  //last_binning_timestep = update->ntimestep;
-
   for (i = 0; i < mbins; i++) binhead[i] = -1;
 
   // bin in reverse order so linked list will be in forward order
@@ -2162,6 +2162,30 @@ int Neighbor::exclusion(int i, int j, int itype, int jtype,
 }
 
 /* ----------------------------------------------------------------------
+   remove the first group-group exclusion matching group1, group2
+------------------------------------------------------------------------- */
+
+void Neighbor::exclusion_group_group_delete(int group1, int group2)
+{
+  int m, mlast;
+  for (m = 0; m < nex_group; m++)
+    if (ex1_group[m] == group1 && ex2_group[m] == group2 )
+      break;
+
+  mlast = m;
+  if (mlast == nex_group) 
+    error->all(FLERR,"Unable to find group-group exclusion");
+  
+  for (m = mlast+1; m < nex_group; m++) {
+    ex1_group[m-1] = ex1_group[m];
+    ex2_group[m-1] = ex2_group[m];
+    ex1_bit[m-1] = ex1_bit[m];
+    ex2_bit[m-1] = ex2_bit[m];
+  }
+  nex_group--;
+}
+
+/* ----------------------------------------------------------------------
    return # of bytes of allocated memory
 ------------------------------------------------------------------------- */
 
@@ -2196,3 +2220,4 @@ int Neighbor::exclude_setting()
 {
   return exclude;
 }
+

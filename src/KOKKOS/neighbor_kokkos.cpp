@@ -485,9 +485,10 @@ void NeighborKokkos::build_kokkos(int topoflag)
   // blist is for standard neigh lists, otherwise is a Kokkos list
 
   for (i = 0; i < nblist; i++) {
-    if (lists[blist[i]])
+    if (lists[blist[i]]) {
+      atomKK->sync(Host,ALL_MASK);
       (this->*pair_build[blist[i]])(lists[blist[i]]);
-    else {
+    } else {
       if (lists_host[blist[i]])
         (this->*pair_build_host[blist[i]])(lists_host[blist[i]]);
       else if (lists_device[blist[i]])
@@ -597,3 +598,4 @@ void NeighborKokkos::build_topology_kokkos() {
 // include to trigger instantiation of templated functions
 
 #include "neigh_full_kokkos.h"
+

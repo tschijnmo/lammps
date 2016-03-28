@@ -360,23 +360,31 @@ E: Atom_modify sort and first options cannot be used together
 
 Self-explanatory.
 
-E: Atom ID is negative
+E: One or more Atom IDs is negative
 
-Self-explanatory.
+Atom IDs must be positive integers.
 
-E: Atom ID is too big
+E: One or more atom IDs is too big
 
 The limit on atom IDs is set by the SMALLBIG, BIGBIG, SMALLSMALL
 setting in your Makefile.  See Section_start 2.2 of the manual for
 more details.
 
-E: Atom ID is zero
+E: One or more atom IDs is zero
 
 Either all atoms IDs must be zero or none of them.
 
-E: Not all atom IDs are 0
+E: Non-zero atom IDs with atom_modify id = no
 
-Either all atoms IDs must be zero or none of them.
+Self-explanatory.
+
+E: All atom IDs = 0 but atom_modify id = yes
+
+Self-explanatory.
+
+E: Duplicate atom IDs exist
+
+Self-explanatory.
 
 E: New atom IDs exceed maximum allowed ID
 
@@ -386,6 +394,10 @@ E: Incorrect atom format in data file
 
 Number of values per atom line in the data file is not consistent with
 the atom style.
+
+E: Invalid atom type in Atoms section of data file
+
+Atom types must range from 1 to specified # of types.
 
 E: Incorrect velocity format in data file
 
