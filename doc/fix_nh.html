@@ -309,8 +309,9 @@ the <a class="reference internal" href="units.html"><em>units</em></a> command).
 of <em>Pdamp</em>.  If <em>Pdamp</em> is too small, the pressure and volume can
 fluctuate wildly; if it is too large, the pressure will take a very
 long time to equilibrate.  A good choice for many models is a <em>Pdamp</em>
-of around 1000 timesteps.  Note that this is NOT the same as 1000 time
-units for most <a class="reference internal" href="units.html"><em>units</em></a> settings.</p>
+of around 1000 timesteps.  However, note that <em>Pdamp</em> is specified in
+time units, and that timesteps are NOT the same as time units for most
+<a class="reference internal" href="units.html"><em>units</em></a> settings.</p>
 </div>
 <p>Regardless of what atoms are in the fix group (the only atoms which
 are time integrated), a global pressure or stress tensor is computed
